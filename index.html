@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#101d2d" />
+  <title>ADIBA CHASE — Dhaka Love Run 2.0</title>
+  <meta name="description" content="A Dhaka street comedy endless runner. You can run, but you can’t escape your wife!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main id="app">
+    <div id="game-wrap"><canvas id="game"></canvas></div>
+    <div class="vignette"></div>
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">♥</span><div><b>ADIBA CHASE</b><small>DHAKA LOVE RUN</small></div></div>
+      <div class="hud hidden" id="hud">
+        <div><small>DISTANCE</small><b id="distance">0 m</b></div>
+        <div><small>SCORE</small><b id="score">0</b></div>
+        <div><small>COINS</small><b id="coins">0</b></div>
+      </div>
+      <button class="icon-btn hidden" id="pause-btn" aria-label="Pause">Ⅱ</button>
+    </header>
+
+    <section class="screen active" id="menu-screen">
+      <div class="menu-copy">
+        <div class="eyebrow">A DHAKA STREET COMEDY</div>
+        <h1>You can run,<br><em>but you can't</em><br>escape your wife!</h1>
+        <p>ঢাকা শহর অনেক বড়, কিন্তু আদিবার হাত থেকে পালানোর রাস্তা নাই! 😂❤️</p>
+        <div class="menu-actions">
+          <button class="primary" id="start-btn">START RUN <span>→</span></button>
+          <button class="secondary" id="how-btn">HOW TO PLAY</button>
+        </div>
+        <div class="best">PERSONAL BEST <b id="best-score">0</b></div>
+      </div>
+      <div class="character-card">
+        <div class="card-glow"></div>
+        <div class="couple-emoji"><span>HUSBAND</span><i>VS</i><span>ADIBA</span></div>
+        <div class="chase-label"><b>HUSBAND</b><span>vs</span><b>ADIBA</b></div>
+        <div class="reference-note">Character inspiration from your uploaded reference</div>
+      </div>
+      <div class="city-label">DHAKA, BANGLADESH <span>•</span> 23.8103° N</div>
+    </section>
+
+    <section class="screen modal-screen" id="help-screen">
+      <div class="panel">
+        <button class="close-btn" data-close="help-screen">×</button>
+        <div class="eyebrow">QUICK GUIDE</div><h2>Don't get caught.</h2>
+        <div class="guide-grid">
+          <div><b>← →</b><span>Change lane</span></div><div><b>↑ / SPACE</b><span>Jump</span></div><div><b>↓</b><span>Slide</span></div><div><b>SWIPE</b><span>Mobile controls</span></div>
+        </div>
+        <p>Dodge traffic, collect coins and keep your distance from Adiba. Every collision gives her a chance to catch up.</p>
+        <button class="primary full" data-close="help-screen">GOT IT</button>
+      </div>
+    </section>
+
+    <section class="screen modal-screen" id="pause-screen">
+      <div class="panel"><div class="eyebrow">TAKE A BREATHER</div><h2>Paused</h2><p>Adiba is still waiting. 😅</p>
+        <button class="primary full" id="resume-btn">RESUME RUN</button><button class="secondary full" id="restart-btn">RESTART</button><button class="text-btn" id="quit-btn">MAIN MENU</button>
+      </div>
+    </section>
+
+    <section class="screen modal-screen" id="caught-screen">
+      <div class="panel caught-panel"><div class="eyebrow">CHASE COMPLETE</div><div class="caught-emoji">😳 ❤️ 😤</div>
+        <h2>ধরা খাইছো!</h2><p id="caught-line">Adiba: এতক্ষণ কোথায় পালাচ্ছিলা?</p><p class="husband-line">তুমি: জান, আমি তো তোমার জন্যই দৌড়াচ্ছিলাম!</p>
+        <div class="result-stats"><div><small>DISTANCE</small><b id="final-distance">0 m</b></div><div><small>SCORE</small><b id="final-score">0</b></div><div><small>COINS</small><b id="final-coins">0</b></div></div>
+        <button class="primary full" id="news-btn">READ TOMORROW'S NEWS →</button>
+      </div>
+    </section>
+
+    <section class="screen modal-screen" id="news-screen">
+      <div class="newspaper">
+        <div class="paper-top"><span>বিশেষ সংস্করণ • ঢাকা</span><span id="paper-date"></span></div>
+        <div class="paper-name">দৈনিক আদিবা সংবাদ</div><div class="breaking">BREAKING NEWS • BREAKING NEWS • BREAKING NEWS</div>
+        <h2>ঢাকার রাস্তায় স্ত্রী আদিবার হাতে অবশেষে ধরা খেলেন পলাতক স্বামী!</h2>
+        <h3>দীর্ঘক্ষণ ধাওয়ার পর রাজধানীর ব্যস্ত রাস্তায় স্বামীকে আটক করেন আদিবা।</h3>
+        <div class="paper-photo"><img id="paper-character-shot" alt="The actual game characters at the moment Adiba catches the husband"><b>CAUGHT!</b></div>
+        <p class="paper-caption">ছবিতে: ঘটনার পর স্বামীকে জিজ্ঞাসাবাদ করছেন আদিবা। প্রত্যক্ষদর্শীরা ঘটনাটিকে “ঐতিহাসিক দৌড়” বলে আখ্যা দিয়েছেন।</p>
+        <div class="paper-columns"><p><b>পালিয়ে লাভ হলো না, CCTV-তে সব ধরা!</b><br>রিকশাচালক বললেন: এমন স্পিড তো বাসেও দেখি নাই!</p><p><b>ট্রাফিক পুলিশের মন্তব্য</b><br>স্ত্রীর রাগ দেখে আমরাও রাস্তা ছেড়ে দিয়েছিলাম।</p></div>
+        <div class="paper-footer">বিশেষ প্রতিনিধি: আদিবা নিউজ টিম • দৌড়েছেন <b id="paper-distance">0</b> মিটার • স্কোর <b id="paper-score">0</b></div>
+        <div class="paper-actions"><button class="primary" id="play-again-btn">আরেকবার পালাই! ↻</button><button class="secondary" id="menu-btn">MAIN MENU</button></div>
+      </div>
+    </section>
+    <div id="toast" aria-live="polite"></div>
+    <div class="mobile-hint" id="mobile-hint">SWIPE TO DODGE</div>
+  </main>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
