@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <meta name="theme-color" content="#101d2d" />
-  <title>ADIBA CHASE — Dhaka Love Run 2.0</title>
-  <meta name="description" content="A Dhaka street comedy endless runner. You can run, but you can’t escape your wife!">
+  <title>ADIBA CHASE — Dhaka Love Run</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -20,7 +19,7 @@
       <div class="hud hidden" id="hud">
         <div><small>DISTANCE</small><b id="distance">0 m</b></div>
         <div><small>SCORE</small><b id="score">0</b></div>
-        <div><small>COINS</small><b id="coins">0</b></div>
+        <div><small>COINS</small><b id="coins">0</b></div><div><small>RUN ৳</small><b id="runtaka">৳0.00</b></div><div><small>WALLET</small><b id="wallet">৳0</b></div>
       </div>
       <button class="icon-btn hidden" id="pause-btn" aria-label="Pause">Ⅱ</button>
     </header>
@@ -33,12 +32,14 @@
         <div class="menu-actions">
           <button class="primary" id="start-btn">START RUN <span>→</span></button>
           <button class="secondary" id="how-btn">HOW TO PLAY</button>
+          <button class="secondary" id="board-btn">🏆 LEADERBOARD</button>
         </div>
+        <div class="best" id="who"></div>
         <div class="best">PERSONAL BEST <b id="best-score">0</b></div>
       </div>
       <div class="character-card">
         <div class="card-glow"></div>
-        <div class="couple-emoji"><span>HUSBAND</span><i>VS</i><span>ADIBA</span></div>
+        <div class="couple-emoji"><span>🏃🏻‍♂️</span><i>💨</i><span>🏃🏻‍♀️</span></div>
         <div class="chase-label"><b>HUSBAND</b><span>vs</span><b>ADIBA</b></div>
         <div class="reference-note">Character inspiration from your uploaded reference</div>
       </div>
@@ -77,13 +78,37 @@
         <div class="paper-name">দৈনিক আদিবা সংবাদ</div><div class="breaking">BREAKING NEWS • BREAKING NEWS • BREAKING NEWS</div>
         <h2>ঢাকার রাস্তায় স্ত্রী আদিবার হাতে অবশেষে ধরা খেলেন পলাতক স্বামী!</h2>
         <h3>দীর্ঘক্ষণ ধাওয়ার পর রাজধানীর ব্যস্ত রাস্তায় স্বামীকে আটক করেন আদিবা।</h3>
-        <div class="paper-photo"><img id="paper-character-shot" alt="The actual game characters at the moment Adiba catches the husband"><b>CAUGHT!</b></div>
+        <div class="paper-photo"><span>🏃🏻‍♂️</span><b>CAUGHT!</b><span>🏃🏻‍♀️</span></div>
         <p class="paper-caption">ছবিতে: ঘটনার পর স্বামীকে জিজ্ঞাসাবাদ করছেন আদিবা। প্রত্যক্ষদর্শীরা ঘটনাটিকে “ঐতিহাসিক দৌড়” বলে আখ্যা দিয়েছেন।</p>
         <div class="paper-columns"><p><b>পালিয়ে লাভ হলো না, CCTV-তে সব ধরা!</b><br>রিকশাচালক বললেন: এমন স্পিড তো বাসেও দেখি নাই!</p><p><b>ট্রাফিক পুলিশের মন্তব্য</b><br>স্ত্রীর রাগ দেখে আমরাও রাস্তা ছেড়ে দিয়েছিলাম।</p></div>
+        <div class="paper-footer" id="paper-extra"></div>
         <div class="paper-footer">বিশেষ প্রতিনিধি: আদিবা নিউজ টিম • দৌড়েছেন <b id="paper-distance">0</b> মিটার • স্কোর <b id="paper-score">0</b></div>
-        <div class="paper-actions"><button class="primary" id="play-again-btn">আরেকবার পালাই! ↻</button><button class="secondary" id="menu-btn">MAIN MENU</button></div>
+        <div class="paper-actions"><button class="primary" id="play-again-btn">আরেকবার পালাই! ↻</button><button class="secondary" id="menu-btn">MAIN MENU</button><button class="secondary" id="share-btn">SHARE ↗</button></div>
       </div>
     </section>
+    
+    <div id="jet-hud" class="hidden"><span>🚀</span><i><u id="jet-fill"></u></i></div>
+    <div id="unlock-banner">জেটপ্যাক আনলক হয়েছে! 🚀</div>
+    <section class="screen modal-screen" id="login-screen"><div class="panel">
+      <div class="eyebrow">LOCAL DEMO ACCOUNT</div><h2>স্বাগতম!</h2>
+      <p class="note">অ্যাকাউন্ট ও স্কোর শুধু এই ডিভাইসের ব্রাউজারে (localStorage) সংরক্ষিত হয়। অন্য ডিভাইসে কাজ করবে না; এটি অনলাইন নিরাপদ লগইন নয়।</p>
+      <button class="primary full" id="gen-btn">নতুন অ্যাকাউন্ট তৈরি করুন</button>
+      <div id="cred" class="hidden"><div class="credrow"><small>USERNAME</small><b id="cred-u"></b></div><div class="credrow"><small>TEMP PASSWORD (একবারই দেখানো হবে)</small><b id="cred-p"></b></div>
+        <button class="secondary full" id="copy-btn">COPY</button><button class="primary full" id="enter-btn">খেলা শুরু →</button></div>
+      <div class="or">— অথবা লগইন —</div>
+      <input id="li-u" placeholder="Username" autocapitalize="characters" autocomplete="username">
+      <div class="pwrow"><input id="li-p" type="password" placeholder="Password" autocomplete="current-password"><button class="text-btn" id="pw-eye" type="button">👁</button></div>
+      <button class="secondary full" id="login-btn">LOG IN</button><p id="login-msg" class="note"></p>
+    </div></section>
+    <section class="screen modal-screen" id="board-screen"><div class="panel board-panel">
+      <button class="close-btn" data-close="menu-screen">×</button>
+      <div class="eyebrow">LEADERBOARD • এই ডিভাইসে (লোকাল)</div>
+      <div id="prof" class="note"></div><div id="prof-msg" class="note"></div>
+      <div class="tabs"><button data-p="day">Daily</button><button data-p="week">Weekly</button><button data-p="all" class="on">All-time</button></div>
+      <div id="board-list"></div>
+      <div class="brow"><button class="secondary" id="refresh-btn">REFRESH</button><button class="text-btn" id="regen-btn">নতুন পাসওয়ার্ড</button><button class="text-btn" id="logout-btn">LOG OUT</button></div>
+      <p class="note">১০০ কয়েন = ৳১ — কাল্পনিক গেম মুদ্রা, আসল টাকা নয়। এটি শুধু লোকাল লিডারবোর্ড; গ্লোবাল র‍্যাঙ্কিংয়ের জন্য সার্ভার ও স্কোর যাচাই দরকার।</p>
+    </div></section>
     <div id="toast" aria-live="polite"></div>
     <div class="mobile-hint" id="mobile-hint">SWIPE TO DODGE</div>
   </main>
