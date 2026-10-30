@@ -40,3 +40,9 @@ This is a procedural art upgrade, not a studio-authored character production. Th
 
 ## 2.1 mobile render hotfix
 This build makes the WebGL canvas opaque, sets an explicit sky clear color, adjusts the gameplay camera framing for portrait phones, and gives the canvas an explicit stacking layer. If the scene is still blank after redeploying, check the browser's WebGL support and the JavaScript console; this patch cannot fix a device/browser where WebGL is disabled.
+
+
+## 2.2 Android animation-loop stability fix
+- Replaced the self-scheduling `requestAnimationFrame` chain with Three.js `renderer.setAnimationLoop()`.
+- Added frame-timing resets when the page is shown, focused, resumed, or the game is resumed.
+- Keeps the existing game scene, controls, characters, scoring, and UI unchanged.

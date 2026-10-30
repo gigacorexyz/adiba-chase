@@ -131,7 +131,7 @@ const dialogues=[
 const $=s=>document.querySelector(s);
 function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('show'),1800);}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));if(id)$('#'+id).classList.add('active');}
-function startGame(){resetGame();showScreen(null);running=true;paused=false;$('#hud').classList.remove('hidden');$('#pause-btn').classList.remove('hidden');$('#mobile-hint').style.display='block';}
+function startGame(){resetGame();lastFrameTime=null;showScreen(null);running=true;paused=false;$('#hud').classList.remove('hidden');$('#pause-btn').classList.remove('hidden');$('#mobile-hint').style.display='block';}
 function resetGame(){for(const o of obstacles)scene.remove(o.mesh);for(const c of collectibles)scene.remove(c);for(const s of scenery)scene.remove(s);obstacles.length=0;collectibles.length=0;scenery.length=0;lane=1;player.position.set(0,0,2.6);adiba.position.set(0,0,5.8);distance=score=coins=chase=elapsed=spawnTimer=coinTimer=dialogueTimer=0;speed=17;jumpV=0;jumping=false;sliding=0;updateHud();}
 function updateHud(){$('#distance').textContent=Math.floor(distance)+' m';$('#score').textContent=score;$('#coins').textContent=coins;}
 function move(dir){if(!running||paused)return;lane=THREE.MathUtils.clamp(lane+dir,0,2);}
@@ -148,7 +148,7 @@ function collision(){
  chase=Math.min(2.6,chase+.72);toast('উফ! আদিবা আরও কাছে চলে এসেছে!');if(chase>=2.45)catchPlayer();
 }
 function pauseGame(){if(!running)return;paused=true;showScreen('pause-screen');}
-function resumeGame(){paused=false;showScreen(null);}
+function resumeGame(){lastFrameTime=null;paused=false;showScreen(null);}
 function finishNews(){
  const paperImg=$('#paper-character-shot');if(paperImg&&window.__adibaGameShot)paperImg.src=window.__adibaGameShot;
  const best=Math.max(Number(localStorage.getItem('adibaBest')||0),score);localStorage.setItem('adibaBest',best);$('#best-score').textContent=best;
@@ -183,9 +183,14 @@ function animateCharacter(character,t,mode='run',blend=1){
  rig.head.rotation.x=Math.sin(t*4)*.025;
 }
 
-const clock=new THREE.Clock();
-function animate(){
- requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);elapsed+=dt;
+// Use Three.js' animation-loop manager instead of a self-scheduling RAF chain.
+// This is more resilient when Android Chrome suspends and resumes a tab.
+let lastFrameTime=null;
+function animate(frameTime){
+ const now=Number.isFinite(frameTime)?frameTime:performance.now();
+ const dt=lastFrameTime===null?0:Math.min(Math.max((now-lastFrameTime)/1000,0),.04);
+ lastFrameTime=now;
+ elapsed+=dt;
  if(running&&!paused){
   distance+=speed*dt*.42;speed=Math.min(30,17+distance*.012);score=Math.floor(distance*3)+coins*10;chase=Math.max(0,chase-dt*.035);
   player.position.x=THREE.MathUtils.damp(player.position.x,lanes[lane],12,dt);
@@ -211,5 +216,14 @@ function animate(){
  camera.position.x=THREE.MathUtils.damp(camera.position.x,player.position.x*.22,2,1/60);camera.lookAt(player.position.x*.12,1.2,-5);
  renderer.render(scene,camera);
 }
-animate();
+renderer.setAnimationLoop(animate);
+
+// Reset the frame-time baseline after pause/resume, tab switching, or app
+// foregrounding so the first frame never inherits a stale timestamp.
+function resetFrameClock(){lastFrameTime=null;}
+document.addEventListener('visibilitychange',resetFrameClock);
+window.addEventListener('pageshow',resetFrameClock);
+window.addEventListener('focus',resetFrameClock);
+window.addEventListener('blur',resetFrameClock);
+animate(performance.now());
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.8));});
