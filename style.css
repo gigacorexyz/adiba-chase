@@ -15,3 +15,76 @@ html,body{touch-action:none;overscroll-behavior:none}input{touch-action:auto}
 #unlock-banner{position:absolute;z-index:8;top:30%;left:50%;transform:translate(-50%,-50%) scale(.5);opacity:0;padding:16px 24px;border-radius:22px;background:linear-gradient(120deg,#ff8a1f,#f4bd58);color:#101d2d;font:700 22px 'Hind Siliguri',sans-serif;pointer-events:none;white-space:nowrap}
 #unlock-banner.show{animation:unlockpop 2.6s ease forwards}
 @keyframes unlockpop{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}30%{transform:translate(-50%,-50%) scale(1)}85%{opacity:1}100%{opacity:0;transform:translate(-50%,-60%) scale(1)}}
+
+/* ===== stage 1: login branding, jetpack HUD, floating taka ===== */
+.login-brand{text-align:center;margin-bottom:12px}
+.login-brand b{display:block;font-size:26px;letter-spacing:.14em;color:var(--gold)}
+.login-brand small{font-size:11px;letter-spacing:.34em;color:var(--muted)}
+.note.err{color:#ff9a8a;min-height:18px;font-family:'Hind Siliguri',sans-serif;font-size:14px}
+#login-screen .panel{max-height:94vh;overflow-y:auto;margin:auto}
+#jet-hud{padding:6px 10px;border-radius:14px;background:#0c1929c0;border:1px solid #ffffff22;max-width:92vw}
+#jet-hud b{font-size:12px;letter-spacing:.06em;white-space:nowrap}
+#jet-hud.ready{border-color:#ffb347;animation:jetready 1s ease-in-out infinite alternate}
+@keyframes jetready{from{box-shadow:0 0 0 #ff8a1f00}to{box-shadow:0 0 16px #ff8a1fcc}}
+#jet-count{position:absolute;z-index:5;top:18%;left:50%;transform:translateX(-50%);font:900 72px Inter,sans-serif;color:#ffd36b;text-shadow:0 4px 24px #ff8a1f,0 0 4px #000;pointer-events:none}
+#unlock-banner{text-align:center;white-space:normal;font-size:20px}
+#unlock-banner div{font:900 26px Inter,sans-serif;letter-spacing:.06em}
+#unlock-banner small{display:block;font-size:17px;margin-top:2px}
+#float-layer{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden}
+.float-tk{position:absolute;left:50%;top:46%;font:900 28px Inter,sans-serif;color:#ffd36b;text-shadow:0 2px 10px #000;animation:floatup .9s ease-out forwards}
+@keyframes floatup{from{transform:translate(-50%,0) scale(.6);opacity:1}to{transform:translate(-50%,-90px) scale(1.2);opacity:0}}
+#wallet.pulse{animation:walletpulse .45s ease}
+@keyframes walletpulse{50%{transform:scale(1.25);color:#ffd36b}}
+@media (max-width:640px){.hud{gap:10px;padding:8px 10px;margin-left:auto}.hud b{font-size:13px}.hud small{font-size:8px}.brand small{display:none}#jet-hud{top:96px}}
+
+/* ===== stage 2: newspaper (uncropped) + leaderboard ===== */
+.newspaper{width:min(720px,96vw);padding:14px 18px 18px}
+.paper-photo{height:auto!important;min-height:0;margin:0;padding:8px;display:block!important;background:#1c3045;text-align:center}
+.paper-photo img{display:block;margin:0 auto;max-width:100%;max-height:68vh;width:auto;height:auto;object-fit:contain}
+.photo-fallback{display:flex;align-items:center;justify-content:center;gap:24px;font-size:45px;height:85px}
+.photo-fallback b{font:900 24px Inter,sans-serif;color:#ffcb6b;transform:rotate(-8deg);text-shadow:2px 3px #222}
+.paper-caption{font-style:italic}
+.paper-body p{font-size:15px;line-height:1.55;margin:8px 0;color:#222;text-align:justify}
+.paper-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:6px 14px;border-top:2px solid #222;border-bottom:1px solid #333;padding:10px 0;margin-top:8px}
+.paper-stats div{display:flex;flex-direction:column;min-width:0}
+.paper-stats small{font:600 10px Inter,sans-serif;letter-spacing:.08em;color:#666;text-transform:uppercase}
+.paper-stats b{font-size:14px;color:#111;word-break:break-word}
+.paper-actions{flex-wrap:wrap}
+.paper-actions button{flex:1 1 130px}
+.paper-actions .secondary{color:#222;background:#0001;border-color:#0004}
+.lr-top{display:flex;align-items:center;gap:8px}
+.lr-top .medal{min-width:38px;font-size:20px;font-weight:800;text-align:center}
+.lr-top b{flex:1;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lr-top em{font:900 18px Inter,sans-serif;color:var(--gold);font-style:normal}
+.lrow small{display:block;margin-left:46px;margin-top:3px}
+.lrow.top1{background:linear-gradient(90deg,#f4bd5840,#ffffff0d)}
+.lrow.top2{background:linear-gradient(90deg,#c0c8d230,#ffffff0d)}
+.lrow.top3{background:linear-gradient(90deg,#cd7f3235,#ffffff0d)}
+.lrow.me{outline:2px solid var(--gold)}
+.gap{text-align:center;color:var(--muted);line-height:1}
+/* top bar must not swallow taps meant for panels underneath (e.g. leaderboard ×) */
+.topbar{pointer-events:none}.topbar .icon-btn,.topbar .hud{pointer-events:auto}
+.board-panel .close-btn{z-index:2}
+#app[data-screen=news-screen] .topbar{visibility:hidden}
+#app:not([data-screen=""]) :is(#unlock-banner,#jet-count,#float-layer,#jet-hud){display:none!important}
+#app:is([data-screen=news-screen],[data-screen=caught-screen]) #toast{display:none}
+
+/* ===== stage 3/4: settings, captions, memes ===== */
+.brand{margin-right:auto}.hud{margin-left:0}#snd-btn{padding:9px 12px;font-size:16px}
+.set-row{display:flex;justify-content:space-between;align-items:center;padding:13px 4px;border-bottom:1px solid #ffffff18;font-size:15px}
+.set-row input[type=checkbox]{width:22px;height:22px;accent-color:#f4bd58}.set-row input[type=range]{width:55%;accent-color:#f4bd58}
+#voice-bubble{position:absolute;z-index:6;top:128px;left:50%;transform:translate(-50%,-8px);max-width:90vw;padding:9px 16px;border-radius:18px 18px 18px 4px;background:#fff;color:#1b2430;font:600 16px 'Hind Siliguri',sans-serif;box-shadow:0 8px 26px #0006;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;text-align:center}
+#voice-bubble.show{opacity:1;transform:translate(-50%,0)}
+#meme{position:absolute;z-index:6;top:196px;right:3vw;width:min(44vw,190px);padding:10px;border-radius:14px;background:#fff7d6;color:#241a05;border:3px solid #241a05;box-shadow:4px 5px 0 #241a05;text-align:center;pointer-events:none;opacity:0;transform:scale(.6) rotate(6deg)}
+#meme .m-emoji{display:block;font-size:44px;line-height:1.1}#meme .m-cap{display:block;font:800 15px 'Hind Siliguri',sans-serif;line-height:1.25;margin-top:2px}
+#meme.show{animation:memepop 2.5s ease forwards}
+@keyframes memepop{0%{opacity:0;transform:scale(.5) rotate(10deg)}12%{opacity:1;transform:scale(1.08) rotate(-3deg)}20%{transform:scale(1) rotate(-2deg)}85%{opacity:1;transform:scale(1) rotate(-2deg)}100%{opacity:0;transform:scale(.9) rotate(-2deg) translateY(-10px)}}
+#jet-count{top:25%}
+#app[data-screen=""] #snd-btn{opacity:.7}
+@media (max-width:640px){#app[data-screen=""] .brand{display:none}#app[data-screen=""] .hud{margin-right:auto}#voice-bubble{top:132px;font-size:15px}#meme{top:210px}}
+#app:not([data-screen=""]) :is(#voice-bubble,#meme){display:none!important}
+/* phones: keep brand/HUD/pause/sound inside 360-390px wide screens */
+@media (max-width:640px){.topbar{gap:8px;padding:12px 10px}.hud{gap:8px;padding:7px 8px}.hud b{font-size:12px}.icon-btn{padding:8px 10px;font-size:15px}#snd-btn{padding:8px 9px}}
+/* overlay slots (top→bottom): HUD · jetpack bar · voice caption · dialogue toast · meme card */
+#voice-bubble{top:156px}#meme{top:226px}
+@media (max-width:640px){#jet-hud{top:78px}#voice-bubble{top:124px}#toast{top:176px;max-width:92vw;text-align:center}#meme{top:252px}}

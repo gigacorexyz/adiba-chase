@@ -1,0 +1,4 @@
+{
+  "_readme": "Optional: map a voice category (coin, near, jump, slide, jet, land, caught, hit, ped) or an exact Bangla line to an audio file in this folder, e.g. { \"coin\": \"coin.mp3\", \"ভাই, রাস্তা দেখে দৌড়ান!\": \"rasta.mp3\" }. Files must be original or properly licensed recordings. When empty, the game uses the device's Bangla text-to-speech (if installed) plus on-screen captions.",
+  "lines": {}
+}

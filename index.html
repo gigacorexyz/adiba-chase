@@ -19,9 +19,10 @@
       <div class="hud hidden" id="hud">
         <div><small>DISTANCE</small><b id="distance">0 m</b></div>
         <div><small>SCORE</small><b id="score">0</b></div>
-        <div><small>COINS</small><b id="coins">0</b></div><div><small>RUN ৳</small><b id="runtaka">৳0.00</b></div><div><small>WALLET</small><b id="wallet">৳0</b></div>
+        <div><small>COINS</small><b id="coins">0</b></div><div><small>MONEY ৳</small><b id="runtaka">৳0.00</b></div><div><small>WALLET</small><b id="wallet">৳0</b></div>
       </div>
       <button class="icon-btn hidden" id="pause-btn" aria-label="Pause">Ⅱ</button>
+      <button class="icon-btn" id="snd-btn" aria-label="Sound settings">🔊</button>
     </header>
 
     <section class="screen active" id="menu-screen">
@@ -46,12 +47,23 @@
       <div class="city-label">DHAKA, BANGLADESH <span>•</span> 23.8103° N</div>
     </section>
 
+    <section class="screen modal-screen" id="settings-screen"><div class="panel">
+      <button class="close-btn" id="settings-close" aria-label="Close">×</button>
+      <div class="eyebrow">AUDIO</div><h2>Sound settings</h2>
+      <label class="set-row"><span>🔊 Sound effects</span><input type="checkbox" id="set-sound"></label>
+      <label class="set-row"><span>🗣 Funny Bangla voice</span><input type="checkbox" id="set-voice"></label>
+      <label class="set-row"><span>🎵 Music</span><input type="checkbox" id="set-music"></label>
+      <label class="set-row"><span>Volume</span><input type="range" id="set-vol" min="0" max="1" step="0.05"></label>
+      <p class="note" id="voice-status"></p>
+      <button class="primary full" id="settings-done">DONE</button>
+    </div></section>
+
     <section class="screen modal-screen" id="help-screen">
       <div class="panel">
         <button class="close-btn" data-close="help-screen">×</button>
         <div class="eyebrow">QUICK GUIDE</div><h2>Don't get caught.</h2>
         <div class="guide-grid">
-          <div><b>← →</b><span>Change lane</span></div><div><b>↑ / SPACE</b><span>Jump</span></div><div><b>↓</b><span>Slide</span></div><div><b>SWIPE</b><span>Mobile controls</span></div>
+          <div><b>← →</b><span>Change lane</span></div><div><b>↑ / SPACE</b><span>Jump</span></div><div><b>↓</b><span>Slide</span></div><div><b>SWIPE</b><span>Mobile controls</span></div><div><b>DOUBLE-TAP / F</b><span>Jetpack (every 10 coins, 10 s)</span></div>
         </div>
         <p>Dodge traffic, collect coins and keep your distance from Adiba. Every collision gives her a chance to catch up.</p>
         <button class="primary full" data-close="help-screen">GOT IT</button>
@@ -76,29 +88,31 @@
       <div class="newspaper">
         <div class="paper-top"><span>বিশেষ সংস্করণ • ঢাকা</span><span id="paper-date"></span></div>
         <div class="paper-name">দৈনিক আদিবা সংবাদ</div><div class="breaking">BREAKING NEWS • BREAKING NEWS • BREAKING NEWS</div>
-        <h2>ঢাকার রাস্তায় স্ত্রী আদিবার হাতে অবশেষে ধরা খেলেন পলাতক স্বামী!</h2>
-        <h3>দীর্ঘক্ষণ ধাওয়ার পর রাজধানীর ব্যস্ত রাস্তায় স্বামীকে আটক করেন আদিবা।</h3>
-        <div class="paper-photo"><span>🏃🏻‍♂️</span><b>CAUGHT!</b><span>🏃🏻‍♀️</span></div>
-        <p class="paper-caption">ছবিতে: ঘটনার পর স্বামীকে জিজ্ঞাসাবাদ করছেন আদিবা। প্রত্যক্ষদর্শীরা ঘটনাটিকে “ঐতিহাসিক দৌড়” বলে আখ্যা দিয়েছেন।</p>
-        <div class="paper-columns"><p><b>পালিয়ে লাভ হলো না, CCTV-তে সব ধরা!</b><br>রিকশাচালক বললেন: এমন স্পিড তো বাসেও দেখি নাই!</p><p><b>ট্রাফিক পুলিশের মন্তব্য</b><br>স্ত্রীর রাগ দেখে আমরাও রাস্তা ছেড়ে দিয়েছিলাম।</p></div>
+        <h2 id="news-head"></h2>
+        <h3 id="news-sub"></h3>
+        <figure class="paper-photo" id="paper-photo"><div class="photo-fallback"><span>🏃🏻‍♂️</span><b>CAUGHT!</b><span>🏃🏻‍♀️</span></div></figure>
+        <p class="paper-caption" id="news-caption"></p>
+        <div class="paper-body" id="news-body"></div>
+        <div class="paper-stats" id="paper-stats"></div>
         <div class="paper-footer" id="paper-extra"></div>
-        <div class="paper-footer">বিশেষ প্রতিনিধি: আদিবা নিউজ টিম • দৌড়েছেন <b id="paper-distance">0</b> মিটার • স্কোর <b id="paper-score">0</b></div>
-        <div class="paper-actions"><button class="primary" id="play-again-btn">আরেকবার পালাই! ↻</button><button class="secondary" id="menu-btn">MAIN MENU</button><button class="secondary" id="share-btn">SHARE ↗</button></div>
+        <div class="paper-actions"><button class="primary" id="play-again-btn">PLAY AGAIN ↻</button><button class="secondary" id="menu-btn">MAIN MENU</button><button class="secondary" id="news-board-btn">🏆 LEADERBOARD</button><button class="secondary" id="share-btn">SHARE ↗</button></div>
       </div>
     </section>
     
-    <div id="jet-hud" class="hidden"><span>🚀</span><i><u id="jet-fill"></u></i></div>
-    <div id="unlock-banner">জেটপ্যাক আনলক হয়েছে! 🚀</div>
+    <div id="jet-hud" class="hidden"><span>🚀</span><b id="jet-label"></b><i><u id="jet-fill"></u></i></div>
+    <div id="jet-count" class="hidden">10</div>
+    <div id="unlock-banner"><div>JETPACK UNLOCKED!</div><small>ভাই, এবার আকাশে উড়ার পালা!</small></div>
+    <div id="float-layer"></div>
+    <div id="voice-bubble" aria-live="polite"></div>
+    <div id="meme" aria-hidden="true"><span class="m-emoji"></span><b class="m-cap"></b></div>
     <section class="screen modal-screen" id="login-screen"><div class="panel">
-      <div class="eyebrow">LOCAL DEMO ACCOUNT</div><h2>স্বাগতম!</h2>
-      <p class="note">অ্যাকাউন্ট ও স্কোর শুধু এই ডিভাইসের ব্রাউজারে (localStorage) সংরক্ষিত হয়। অন্য ডিভাইসে কাজ করবে না; এটি অনলাইন নিরাপদ লগইন নয়।</p>
-      <button class="primary full" id="gen-btn">নতুন অ্যাকাউন্ট তৈরি করুন</button>
-      <div id="cred" class="hidden"><div class="credrow"><small>USERNAME</small><b id="cred-u"></b></div><div class="credrow"><small>TEMP PASSWORD (একবারই দেখানো হবে)</small><b id="cred-p"></b></div>
-        <button class="secondary full" id="copy-btn">COPY</button><button class="primary full" id="enter-btn">খেলা শুরু →</button></div>
-      <div class="or">— অথবা লগইন —</div>
-      <input id="li-u" placeholder="Username" autocapitalize="characters" autocomplete="username">
-      <div class="pwrow"><input id="li-p" type="password" placeholder="Password" autocomplete="current-password"><button class="text-btn" id="pw-eye" type="button">👁</button></div>
-      <button class="secondary full" id="login-btn">LOG IN</button><p id="login-msg" class="note"></p>
+      <div class="login-brand"><b>ADIBA CHASE</b><small>DHAKA LOVE RUN</small></div>
+      <div class="tabs" id="auth-tabs"><button type="button" data-mode="login" class="on">LOG IN</button><button type="button" data-mode="register">REGISTER</button></div>
+      <input id="li-u" placeholder="Username (3–16: A-Z, 0-9, _)" maxlength="16" autocapitalize="none" autocomplete="username" spellcheck="false">
+      <div class="pwrow"><input id="li-p" type="password" placeholder="Password (min 4)" maxlength="64" autocomplete="current-password"><button class="text-btn" id="pw-eye" type="button" aria-label="Show or hide password">👁</button></div>
+      <button class="primary full" id="auth-btn" type="button">LOG IN</button>
+      <p id="login-msg" class="note err" aria-live="polite"></p>
+      <p class="note">⚠ লোকাল ডেমো অ্যাকাউন্ট: তথ্য শুধু এই ডিভাইসের ব্রাউজারে (localStorage) থাকে, অন্য ডিভাইসে কাজ করবে না। এটি নিরাপদ অনলাইন লগইন নয়; আসল অ্যাকাউন্টের জন্য সার্ভার ও hashed password দরকার। কেউ আপনার পাসওয়ার্ড এই ডিভাইসে দেখতে পাবে না, শুধু salted hash সংরক্ষিত হয়।</p>
     </div></section>
     <section class="screen modal-screen" id="board-screen"><div class="panel board-panel">
       <button class="close-btn" data-close="menu-screen">×</button>
@@ -106,8 +120,8 @@
       <div id="prof" class="note"></div><div id="prof-msg" class="note"></div>
       <div class="tabs"><button data-p="day">Daily</button><button data-p="week">Weekly</button><button data-p="all" class="on">All-time</button></div>
       <div id="board-list"></div>
-      <div class="brow"><button class="secondary" id="refresh-btn">REFRESH</button><button class="text-btn" id="regen-btn">নতুন পাসওয়ার্ড</button><button class="text-btn" id="logout-btn">LOG OUT</button></div>
-      <p class="note">১০০ কয়েন = ৳১ — কাল্পনিক গেম মুদ্রা, আসল টাকা নয়। এটি শুধু লোকাল লিডারবোর্ড; গ্লোবাল র‍্যাঙ্কিংয়ের জন্য সার্ভার ও স্কোর যাচাই দরকার।</p>
+      <div class="brow"><button class="secondary" id="refresh-btn">REFRESH</button><button class="text-btn" id="logout-btn">LOG OUT</button></div>
+      <p class="note">১ কয়েন = ৳১০০ — কাল্পনিক গেম মুদ্রা, আসল টাকা নয়। এটি শুধু লোকাল লিডারবোর্ড; গ্লোবাল র‍্যাঙ্কিংয়ের জন্য সার্ভার ও স্কোর যাচাই দরকার।</p>
     </div></section>
     <div id="toast" aria-live="polite"></div>
     <div class="mobile-hint" id="mobile-hint">SWIPE TO DODGE</div>
